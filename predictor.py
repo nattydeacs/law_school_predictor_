@@ -1,15 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun 22 14:43:58 2022
-
-@author: natdeacon
-"""
-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jun 13 09:30:04 2022
+Created on Thu Jun 23 15:07:48 2022
 
 @author: natdeacon
 """
@@ -30,9 +22,8 @@ import numpy as np
 #####################################
 df = pd.read_csv("lsdata.csv", skiprows=1, skipinitialspace=True)
 rankings = pd.read_csv("usnwr_rankings_2023.csv")
-t14 = list(rankings[rankings["rank"] <= 14]["school_name"])
 
-df = df[df["school_name"].isin(t14)]
+df = df[df["school_name"] == "Georgetown University"]
 df["sent_at"] = pd.to_datetime(df["sent_at"].fillna("1900-01-01"), format= '%Y-%m-%d')
 df = df[df["sent_at"]>"2019-08-01"]
 df = df[df["lsat"] > 120] #likely fake entries; score equivilent to filling out no questions
@@ -57,22 +48,11 @@ df["is_military"].fillna(False,inplace=True)
 df["is_military"] = df['is_military'].astype(str).map({'True': True, 'False': False}).astype("bool")
 df["is_character_and_fitness_issues"].fillna(False,inplace=True)
 df["is_character_and_fitness_issues"] = df['is_character_and_fitness_issues'].astype(str).map({'True': True, 'False': False}).astype("bool")
-
 df["was_accepted"] = np.where(df["simple_status"].isin(accepted_status), 1, 0) 
-
-df = df.groupby("user_id").agg({"is_in_state": "mean", "is_fee_waived": "mean", 
-                                "lsat": "mean", "softs": "mean", "urm": "mean",
-                                "non_trad": "mean", "gpa": "mean", "is_international": "mean",
-                                "years_out": "mean", "is_military": "mean", 
-                                "is_character_and_fitness_issues": "mean", 
-                                "school_name": "count",
-                                "was_accepted": "sum"}).reset_index()
-df = df.rename(columns={'school_name': 'num_schools_applied'})
 df["years_out"].fillna(df["years_out"].median(), inplace = True)
-df["was_accepted"] = np.where(df["was_accepted"]>0, 1, 0)
-df["is_fee_waived"] = np.where(df["is_fee_waived"]>0, 1, 0)
 
-df = df.drop("user_id", axis =1)
+
+df = df.drop(["school_name", "user_id", "sent_at", "simple_status"], axis =1)
 df = df.dropna(axis = 0)
 
 #####################################
@@ -175,7 +155,7 @@ def auc_train_test(variables, target, train, test):
     
     # Fit the model on train data
     logreg.fit(X_train, y_train)
-    
+
     # Calculate the predictions both on train and test data
     predictions_train = logreg.predict_proba(X_train)[:,1]
     predictions_test = logreg.predict_proba(X_test)[:,1]
@@ -211,11 +191,11 @@ for x,y in zip(x,y_test):
                  textcoords="offset points", # how to position the text
                  xytext=(0,10), # distance from text to points (x,y)
                  ha='center') # horizontal alignment can be left, right or center
-plt.title("LSAT, Number Schools Applied To, GPA, and URM status are the best variables for the model")
+plt.title("LSAT, GPA, and URM status are the best variables for the model")
 plt.show()
 
 #select all variables before AUC of test line peaks
-predictors = ["lsat", "num_schools_applied", "gpa", "urm"]
+predictors = ["lsat", "gpa", "urm"]
 
 
 #####################################
@@ -229,7 +209,7 @@ logreg.fit(X, y) #fit model to the data
 predictions = logreg.predict_proba(X)[:,1] #get predictions
 auc_score = roc_auc_score(y, predictions)
 print(auc_score)
-#output = 0.8379180780507244
+
 
 
 #####################################
@@ -254,16 +234,16 @@ new_df = df[predictors] #create df with just predictors
 #####################################
 
 lsatDF = pd.DataFrame()
-lsatDF['lsat'] = list(range(120, 181))
+lsatDF['lsat'] = list(range(140, 181))
 lsatDF['key'] = 0
 
 gpaDF = pd.DataFrame()
-gpaDF['gpa'] = list(map(lambda val: val/10.0, range(20, 44, 1)))
+gpaDF['gpa'] = list(map(lambda val: val/10.0, range(250, 440, 5)))
+gpaDF['gpa'] = gpaDF['gpa']*0.1
 gpaDF['key'] = 0
 
 predict_vals = lsatDF.merge(gpaDF, on='key', how='outer')
 predict_vals = predict_vals.drop("key", axis =1 )
-predict_vals.insert(1, "school_name", 14)
 
 #urm predictions
 predict_vals_urm = predict_vals.copy()
@@ -304,7 +284,7 @@ figurm = go.Figure(data =
                 hovertemplate='LSAT: %{x}<br>GPA: %{y}<br>Probability of Acceptance: %{z}<extra></extra>'))
   
 figurm.update_layout(
-    title="Probablity of one or more t-14 acceptances (under-represented minority applicants)",
+    title="Probablity of Georgetown acceptance (under-represented minority applicants)",
     xaxis_title="LSAT Score",
     yaxis_title="Grade Point Average"
 )
@@ -318,7 +298,7 @@ figNurm = go.Figure(data =
                 hovertemplate='LSAT: %{x}<br>GPA: %{y}<br>Probability of Acceptance: %{z}<extra></extra>'))
 
 figNurm.update_layout(
-    title="Probablity of one or more t-14 acceptances (non under-represented minority applicants)",
+    title="Probablity of Georgetown acceptance (non under-represented minority applicants)",
     xaxis_title="LSAT Score",
     yaxis_title="Grade Point Average"
 )
