@@ -84,7 +84,7 @@ X = df.drop(["was_accepted"], axis = 1)
 y = df["was_accepted"]
 
 #70/30 split, stratify by y so train and test sets have equal target incidence
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .3, stratify = y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state= 33, test_size = .3, stratify = y)
 
 
 #create final train and test dataframes
@@ -254,12 +254,15 @@ new_df = df[predictors] #create df with just predictors
 #####################################
 
 lsatDF = pd.DataFrame()
-lsatDF['lsat'] = list(range(120, 181))
+lsatDF['lsat'] = list(range(140, 181))
 lsatDF['key'] = 0
 
 gpaDF = pd.DataFrame()
-gpaDF['gpa'] = list(map(lambda val: val/10.0, range(20, 44, 1)))
+gpaDF['gpa'] = list(map(lambda val: val/10.0, range(270, 435, 5)))
+gpaDF['gpa'] = gpaDF['gpa']*0.1
 gpaDF['key'] = 0
+
+
 
 predict_vals = lsatDF.merge(gpaDF, on='key', how='outer')
 predict_vals = predict_vals.drop("key", axis =1 )
@@ -269,7 +272,6 @@ predict_vals.insert(1, "school_name", 14)
 predict_vals_urm = predict_vals.copy()
 predict_vals_urm["urm"] = 1
 
-
 urm_predictions = logreg.predict_proba(predict_vals_urm) 
 pd.Series(urm_predictions[:, 1])
 
@@ -278,8 +280,6 @@ predict_vals_urm["probability_acceptance"] = round(pd.Series(urm_predictions[:,1
 #Nurm predictions
 predict_vals_Nurm = predict_vals.copy()
 predict_vals_Nurm["urm"] = 0
-
-
 
 Nurm_predictions = logreg.predict_proba(predict_vals_Nurm) 
 pd.Series(Nurm_predictions[:, 1])

@@ -64,7 +64,8 @@ X = df.drop(["was_accepted"], axis = 1)
 y = df["was_accepted"]
 
 #70/30 split, stratify by y so train and test sets have equal target incidence
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .3, stratify = y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .3, 
+                                                    random_state=33, stratify = y)
 
 
 #create final train and test dataframes
@@ -238,7 +239,7 @@ lsatDF['lsat'] = list(range(140, 181))
 lsatDF['key'] = 0
 
 gpaDF = pd.DataFrame()
-gpaDF['gpa'] = list(map(lambda val: val/10.0, range(250, 440, 5)))
+gpaDF['gpa'] = list(map(lambda val: val/10.0, range(270, 435, 5)))
 gpaDF['gpa'] = gpaDF['gpa']*0.1
 gpaDF['key'] = 0
 
@@ -271,7 +272,6 @@ predict_vals_Nurm["probability_acceptance"] = round(pd.Series(Nurm_predictions[:
 #pgraph
 #####################################
 import plotly.graph_objects as go
-import plotly.express as px
 import plotly.io as pio
 pio.renderers.default='browser'
 
