@@ -1,6 +1,11 @@
 # Law School Admission Predictor
 This repository contains the data, charts, and scripts used to create the charts for the following blog (link
 
+# How to view interactive heatmaps
+1. Open the the html file of the chart you wish to view in this folder (link) in GitHub
+2. Download the file 
+3. Open the file with a web-browser (Chrome, Firefox, etc.)
+
 # Data
 
 * lsdata.csv: An export of law school admissions outcomes downloaded from https://www.lsd.law/ on DATE
