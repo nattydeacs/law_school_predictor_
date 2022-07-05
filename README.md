@@ -21,4 +21,5 @@ This repository contains the data, charts, and scripts used to create the charts
 # How to create predictive model for school other than Georgetown
 
 1. Clone the repository
-2. 
+2. Open the Gtown_logreg.py file
+3. Edit line 26 to replace "Georgetown University" with your school of interest
