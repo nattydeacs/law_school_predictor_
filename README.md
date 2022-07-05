@@ -8,7 +8,7 @@ This repository contains the data, charts, and scripts used to create the charts
 
 # Data
 
-* lsdata.csv: An export of law school admissions outcomes downloaded from https://www.lsd.law/ on DATE
+* lsdata.csv: An export of law school admissions outcomes downloaded from [lawschooldata.org](https://www.lsd.law/) on May 28th, 2022
 * LSAC_scores_data.xlsx: An export of LSAC score distribution data downloaded from the [LSAC's current volume summary report](https://report.lsac.org/VolumeSummary.aspx) on June 28th, 2022
 * usnwr_rankings_2023.csv: A list of the top 14 law schools from the US News and World Report's 2023 [rankings](https://www.usnews.com/best-graduate-schools/top-law-schools/law-rankings)
 
