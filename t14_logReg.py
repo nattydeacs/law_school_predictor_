@@ -200,8 +200,8 @@ for v in current_variables:
 x = np.array(range(0,len(auc_values_train)))
 y_test = np.array(auc_values_test)
 plt.xticks(x, current_variables, rotation = 90)
-plt.plot(x,y_test)
-plt.ylim((0.6, 1))
+plt.plot(x,y_test,  color = '#144b11')
+plt.ylim((0.7, .95))
 plt.ylabel("AUC Score, testing set")
 plt.xlabel("Candidate Predictor Variable")
 for x,y in zip(x,y_test):
