@@ -21,5 +21,8 @@ This repository contains the data, charts, and scripts used to create the charts
 # How to create predictive model for school other than Georgetown
 
 1. Clone the repository
-2. Open the Gtown_logreg.py file
+2. Open the gtown_logReg.py file
 3. Edit line 26 to replace "Georgetown University" with your school of interest
+4. Run through line 196 and view the AUC line chart
+5. Replace the 'predictors' in line 199 with all variables which increase AUC, as shown by the chart generated in line 4
+6. Run the rest of the script to see results in heatmap
