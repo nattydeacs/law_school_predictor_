@@ -17,3 +17,8 @@ This repository contains the data, charts, and scripts used to create the charts
 * lsat_histogram.py: Creates a histogram comparing the distribution of LSAT scores from the lsdata export and the official LSAC numbers
 * t14_logReg.py: Creates a logisitic regression model to predict whether or not a student will be admitted to at least one top-14 law school; visualizes predictions in heatmap
 * gtown_logReg.py: Creates a logisitic regression model to predict whether or not a student will be admitted to Georgetown Law; visualizes predictions in heatmap
+
+# How to create predictive model for school other than Georgetown
+
+1. Clone the repository
+2. 
